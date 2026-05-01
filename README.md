@@ -92,7 +92,17 @@ To identify user agents associated with possible scripted or automated activity,
 This query filters the dataset to HTTP events containing a selected group of user-agent strings that are commonly associated with scripting, automation, or testing tools. It then counts how many times each one appears in the log data.
 
 What I found:  
-The results showed `sqlmap/1.5.1` with `79` events, `python-requests/2.25.1` with `78`, `botnet-checker/1.0` with `70`, and `curl/7.68.0` with `69`. This mattered because these user agents stand out from normal browser-based traffic and suggest a stronger possibility of scripted or automated requests. In particular, a tool like `sqlmap` is closely associated with SQL injection testing, while `curl` and `python-requests` are often used in scripts and automation.
+The results showed `sqlmap/1.5.1` with `79` events, `python-requests/2.25.1` with `78`, `botnet-checker/1.0` with `70`, and `curl/7.68.0` with `69`. Each of these stood out for a different reason.
+
+`sqlmap/1.5.1` is especially notable because `sqlmap` is a tool commonly used to automate SQL injection testing. Seeing it in web logs could suggest that someone was probing the application for database-related vulnerabilities.
+
+`python-requests/2.25.1` points to traffic that may have been generated through a Python script rather than a normal web browser. That does not automatically mean the traffic is malicious, but it can suggest automation, custom tooling, or scripted interaction with the site.
+
+`curl/7.68.0` is another user agent often tied to command-line HTTP requests. Like `python-requests`, it can be used for legitimate testing or administration, but it can also appear during reconnaissance, scripted requests, or manual probing of a web service.
+
+`botnet-checker/1.0` is the most suspicious-looking name in the group because it directly suggests some kind of automated checking or scanning behavior. Even if it is synthetic data, a user agent like that would stand out immediately during a real review.
+
+This mattered because these user agents do not blend in with normal browser traffic the way a standard Chrome, Firefox, or Safari string would. Seeing several of them appear repeatedly in the same dataset helps highlight activity that would likely deserve closer investigation.
 
 ### 7. Find Large File Transfers
 
